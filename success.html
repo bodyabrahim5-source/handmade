@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدفع ناجح</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 60px; background: #f8f8f8; color: #222; }
+    .card { display: inline-block; padding: 32px; border-radius: 18px; background: #fff; box-shadow: 0 16px 32px rgba(0,0,0,0.08); }
+    h1 { margin-bottom: 12px; }
+    p { margin: 16px 0; line-height: 1.6; }
+    a { display: inline-block; margin-top: 20px; padding: 12px 24px; border-radius: 999px; background: #0a84ff; color: #fff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>تم الدفع بنجاح!</h1>
+    <p>شكرًا لاستخدامك متجر Handmade. سيتم معالجة طلبك في أقرب وقت.</p>
+    <p id="orderIdText" style="font-weight:700; color:#0a84ff; margin-top:12px;">رقم الطلب: يتم تحديده الآن...</p>
+    <a href="./index.html">العودة للمتجر</a>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    if (orderId) {
+      document.getElementById('orderIdText').innerText = `رقم الطلب: ${orderId}`;
+    } else {
+      document.getElementById('orderIdText').innerText = 'رقم الطلب غير متوفر حالياً، راجع حسابك أو تواصل معنا.';
+    }
+  </script>
+</body>
+</html>
