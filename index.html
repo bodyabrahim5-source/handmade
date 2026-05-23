@@ -38,6 +38,14 @@
             scroll-behavior: smooth;
             background-color: var(--ios-bg);
             color: var(--text-main);
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        body {
+            overflow-x: hidden;
+            min-width: 0;
+            max-width: 100vw;
         }
 
         body.dark-theme {
@@ -303,7 +311,7 @@
         }
         .price-slider-container input { width: 100%; margin-top: 8px; accent-color: var(--accent-color); }
 
-        .filter-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; padding: 0 20px; }
+        .filter-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; padding: 0 20px; flex-wrap: wrap; }
         .filter-btn { 
             background: var(--ios-glass); 
             border: 1px solid var(--ios-border); 
@@ -511,6 +519,29 @@
         .bundle-banner { background: rgba(243, 156, 18, 0.1); border: 1px dashed var(--gold-glow); padding: 10px; border-radius: 12px; font-size: 13px; text-align: center; margin-bottom: 15px; color: #f1c40f; }
         .quick-view-img { width: 100%; height: 220px; border-radius: 16px; overflow: hidden; margin-bottom: 15px; }
         .quick-view-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        @media (max-width: 900px) {
+            .header-container { flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 12px; }
+            .header-container > * { min-width: 0; width: 100%; }
+            .header-container > div:last-child { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 10px; }
+            .nav-links { order: 2; width: 100%; justify-content: center; display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+            .nav-links a { margin-right: 0; }
+            .theme-toggle-btn, .btn-secondary, .btn-ultra, .cart-quick-btn { min-width: auto; }
+            .price-slider-container, .search-box-container { min-width: 100%; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+            .glass-welcome-card { max-width: 100%; }
+        }
+        @media (max-width: 600px) {
+            .hero-text h1 { font-size: 30px; }
+            .hero-text p, .nav-links a, .theme-toggle-btn, .btn-secondary, .btn-ultra { font-size: 14px; }
+            .search-filter-wrapper { gap: 12px; }
+            .header-container { padding: 0 12px; }
+            .glass-welcome-card { padding: 28px 18px; }
+            .hero-section { padding: 40px 14px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .modal-content-box { padding: 22px; }
+            .price-slider-container, .search-box-container { min-width: 100%; width: 100%; }
+        }
     </style>
 </head>
 <body class="dark-theme">
@@ -734,6 +765,7 @@
         let currentExpressProduct = {};
         let isFastMode = false;
         let particleAnimationFrame = null;
+        let canvasResizeHandler = null;
         const dom = {};
 
         function isLowPerformanceDevice() {
@@ -1144,10 +1176,21 @@
         // جزيئات سريعة وخفيفة جداً للخلفية لمنع أي بطء
         const canvas = document.getElementById('bg-canvas'); 
         function setupCanvasParticles() {
-            if (!canvas || dom.isLowPerf || isFastMode) return;
+            if (!canvas) return;
+            if (dom.isLowPerf || isFastMode) {
+                if (canvasResizeHandler) {
+                    window.removeEventListener('resize', canvasResizeHandler);
+                    canvasResizeHandler = null;
+                }
+                return;
+            }
             const ctx = canvas.getContext('2d'); let particles = [];
             function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-            window.addEventListener('resize', initCanvas); initCanvas();
+            if (!canvasResizeHandler) {
+                canvasResizeHandler = initCanvas;
+                window.addEventListener('resize', canvasResizeHandler);
+            }
+            initCanvas();
             class Particle {
                 constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 0.8 + 0.25; this.speedY = Math.random() * 0.08 + 0.02; }
                 update() { this.y -= this.speedY; if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; } }
@@ -1170,6 +1213,15 @@
         }
 
         window.onclick = function(e) { if (e.target.classList.contains('universal-modal')) e.target.classList.remove('active'); }
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        if (typeof io === 'function') {
+            const socket = io();
+            socket.on('reload', () => {
+                window.location.reload();
+            });
+        }
     </script>
 </body>
 </html>

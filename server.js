@@ -2,9 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs').promises;
+const http = require('http');
+const { Server } = require('socket.io');
+const chokidar = require('chokidar');
 const Stripe = require('stripe');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
 const port = process.env.PORT || 3000;
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
@@ -19,6 +24,22 @@ const stripe = Stripe(stripeSecret);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
+
+io.on('connection', (socket) => {
+  console.log('Live reload client connected');
+});
+
+const watcher = chokidar.watch([
+  path.join(__dirname, 'index.html'),
+  path.join(__dirname, 'style.css'),
+  path.join(__dirname, '*.js'),
+  path.join(__dirname, '*.html')
+], { ignoreInitial: true });
+
+watcher.on('change', (filePath) => {
+  console.log(`File changed: ${filePath}`);
+  io.emit('reload');
+});
 
 async function ensureOrdersFile() {
   try {
@@ -179,7 +200,7 @@ app.get('/orders', async (req, res) => {
   }
 });
 
-app.listen(port, async () => {
+server.listen(port, async () => {
   await ensureOrdersFile();
   console.log(`Server running at http://localhost:${port}`);
 });
