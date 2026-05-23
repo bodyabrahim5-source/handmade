@@ -141,11 +141,22 @@
         .splash-heart:nth-child(3) { left: 55%; animation-delay: 0.5s; font-size: 28px; }
         .splash-heart:nth-child(4) { left: 78%; animation-delay: 3.5s; font-size: 20px; }
 
+        @media (max-width: 600px) {
+            .splash-heart { animation-name: floatUp3D-mobile; }
+        }
+
         @keyframes floatUp3D {
             0% { transform: translate3d(0,0,0) rotate(0deg); opacity: 0; }
             10% { opacity: 0.6; }
             90% { opacity: 0.6; }
             100% { transform: translate3d(0, -120vh, 0) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes floatUp3D-mobile {
+            0% { transform: translate2d(0,0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translate2d(0, -120vh) rotate(360deg); opacity: 0; }
         }
 
         @keyframes pulseHeart {
@@ -357,7 +368,7 @@
             border: 1px solid var(--ios-border); 
             border-radius: 24px; 
             overflow: hidden; 
-            transition: box-shadow 0.3s ease; 
+            transition: box-shadow 0.3s ease, transform 0.3s ease-out; 
             /* التسريع الهاردويري للـ 3D */
             transform: translateZ(0); 
             will-change: transform; 
@@ -370,7 +381,7 @@
         .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .gallery-card:hover .image-container img { transform: scale(1.05); }
         
-        .shine-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .shine-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; transition: background 0.1s ease-out; }
         .wishlist-btn { 
             position: absolute; 
             top: 15px; 
@@ -386,6 +397,7 @@
             align-items: center; 
             font-size: 16px; 
             transition: transform 0.2s, background 0.3s;
+            z-index: 10;
         }
         .wishlist-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.6); }
 
@@ -531,6 +543,8 @@
             .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
             .glass-welcome-card { max-width: 100%; }
         }
+        
+        /* 📱 تعديلات الموبايل الفائقة لظهور الصور جنباً إلى جنب والأنيميشن التاتش */
         @media (max-width: 600px) {
             .hero-text h1 { font-size: 30px; }
             .hero-text p, .nav-links a, .theme-toggle-btn, .btn-secondary, .btn-ultra { font-size: 14px; }
@@ -538,7 +552,20 @@
             .header-container { padding: 0 12px; }
             .glass-welcome-card { padding: 28px 18px; }
             .hero-section { padding: 40px 14px; }
-            .gallery-grid { grid-template-columns: 1fr; }
+            
+            /* تم تعديل الـ Grid هنا ليعرض صورتين متجاورتين بدلاً من صورة واحدة غبية تحت بعض */
+            .gallery-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 12px; 
+            }
+            .card-details { padding: 10px; }
+            .card-details h3 { font-size: 14px; margin-bottom: 4px; }
+            .scarcity-text { font-size: 10px; margin-bottom: 8px; }
+            .price { font-size: 15px; }
+            .cart-quick-btn { width: 32px; height: 32px; border-radius: 8px; font-size: 12px; }
+            .card-actions .btn-ultra.express-btn { padding: 6px 10px !important; font-size: 10px !important; border-radius: 8px !important; }
+            .wishlist-btn { top: 8px; left: 8px; width: 30px; height: 30px; font-size: 12px; }
+
             .modal-content-box { padding: 22px; }
             .price-slider-container, .search-box-container { min-width: 100%; width: 100%; }
         }
@@ -1118,37 +1145,60 @@
             if(area) { area.style.display = check.checked ? "block" : "none"; if(check.checked) area.focus(); }
         }
 
-        // تأثير الإمالة ثلاثية الأبعاد خفيفة الأداء ومسرعة برمجياً
+        // ✨ تأثير الإمالة ثلاثية الأبعاد المطور ليعمل بكفاءة فائقة على التاتش والماوس معاً ✨
         function init3DTiltEffect() {
             if (dom.isLowPerf || isFastMode) return;
             const cards = document.querySelectorAll('.tilt-card');
+            
             cards.forEach(card => {
                 if (card.dataset.tiltInitialized === 'true') return;
                 card.dataset.tiltInitialized = 'true';
                 const shine = card.querySelector('.shine-layer');
                 let frame = null;
 
-                const updateTilt = (e) => {
+                const updateTilt = (clientX, clientY) => {
                     const cardRect = card.getBoundingClientRect();
-                    const rotateX = (-(e.clientY - (cardRect.top + cardRect.height / 2)) / (cardRect.height / 2)) * 6;
-                    const rotateY = ((e.clientX - (cardRect.left + cardRect.width / 2)) / (cardRect.width / 2)) * 6;
+                    const rotateX = (-(clientY - (cardRect.top + cardRect.height / 2)) / (cardRect.height / 2)) * 6;
+                    const rotateY = ((clientX - (cardRect.left + cardRect.width / 2)) / (cardRect.width / 2)) * 6;
                     card.style.transform = `perspective(800px) translate3d(0, -4px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    
                     if (shine) {
                         const alpha = document.body.classList.contains('dark-theme') ? 0.15 : 0.25;
-                        shine.style.background = `radial-gradient(circle at ${e.clientX - cardRect.left}px ${e.clientY - cardRect.top}px, rgba(255,255,255,${alpha}) 0%, rgba(255,255,255,0) 70%)`;
+                        shine.style.background = `radial-gradient(circle at ${clientX - cardRect.left}px ${clientY - cardRect.top}px, rgba(255,255,255,${alpha}) 0%, rgba(255,255,255,0) 70%)`;
                     }
                     frame = null;
                 };
 
-                card.addEventListener('mousemove', (e) => {
-                    if (frame) return;
-                    frame = requestAnimationFrame(() => updateTilt(e));
-                });
-                card.addEventListener('mouseleave', () => {
+                const resetTilt = () => {
                     if (frame) { cancelAnimationFrame(frame); frame = null; }
                     card.style.transform = 'perspective(800px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)';
                     if (shine) shine.style.background = 'none';
+                };
+
+                // أحداث الكمبيوتر (الماوس)
+                card.addEventListener('mousemove', (e) => {
+                    if (frame) return;
+                    frame = requestAnimationFrame(() => updateTilt(e.clientX, e.clientY));
                 });
+                card.addEventListener('mouseleave', resetTilt);
+
+                // أحداث شاشات اللمس (الموبايل) لمقاطعة وحساب إحداثيات الإصبع بسلاسة
+                card.addEventListener('touchstart', (e) => {
+                    if (e.touches.length > 0) {
+                        const touch = e.touches[0];
+                        updateTilt(touch.clientX, touch.clientY);
+                    }
+                }, { passive: true });
+
+                card.addEventListener('touchmove', (e) => {
+                    if (e.touches.length > 0) {
+                        const touch = e.touches[0];
+                        if (frame) return;
+                        frame = requestAnimationFrame(() => updateTilt(touch.clientX, touch.clientY));
+                    }
+                }, { passive: true });
+
+                card.addEventListener('touchend', resetTilt);
             });
         }
 
