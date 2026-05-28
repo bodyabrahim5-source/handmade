@@ -141,12 +141,167 @@ body {
 
 footer { text-align: center; padding: 40px; color: #3a3a3c; font-size: 0.85rem; margin-top: 50px; }
 
+/* ==========================================================================
+   تحديث وتطوير التجاوب للهواتف الذكية (Mobile Responsive & Zero Lag)
+   ========================================================================== */
 @media (max-width: 768px) {
-    body { cursor: auto; }
-    .custom-cursor, .cursor-glow { display: none; }
-    .hover-reveal-text { font-size: 2.6rem; gap: 10px; }
-    .glass-nav nav { display: none; }
-    .word { opacity: 1; }
-    .glass-card:hover { backdrop-filter: none; }
-    .cart-sidebar { width: 300px; left: -310px; }
+    body { 
+        cursor: auto !important; 
+    }
+    .custom-cursor, 
+    .cursor-glow { 
+        display: none !important; 
+    }
+
+    /* الهيدر الزجاجي منسق بالكامل للموبايل */
+    .glass-nav {
+        top: 10px;
+        left: 3%;
+        right: 3%;
+        height: auto;
+        padding: 12px 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 25px;
+    }
+    
+    /* جعل أزرار التنقل تظهر بشكل شريط سفلي متناسق داخل الهيدر */
+    .glass-nav nav { 
+        display: flex !important;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .glass-nav nav a {
+        margin-right: 0;
+        font-size: 0.85rem;
+    }
+
+    .nav-actions {
+        gap: 12px;
+    }
+    
+    .contact-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        border-radius: 15px;
+    }
+
+    /* ضبط نصوص الهيرو والمقاسات */
+    .hero { 
+        min-height: 85vh;
+        padding: 140px 15px 40px 15px; 
+    }
+    
+    .hover-reveal-text { 
+        font-size: 2.2rem; 
+        gap: 8px; 
+        line-height: 1.4;
+    }
+    
+    .word { 
+        opacity: 1 !important; 
+        transform: none !important;
+    }
+    
+    .scroll-down-btn {
+        margin-top: 30px;
+        padding: 10px 22px;
+        font-size: 0.9rem;
+    }
+
+    /* جعل أزرار الفلاتر قابلة للسحب الأفقي الناعم لمنع التشوه */
+    .filter-buttons {
+        justify-content: flex-start;
+        overflow-x: auto; 
+        white-space: nowrap;
+        padding: 5px 15px;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch; 
+    }
+    
+    .filter-buttons::-webkit-scrollbar {
+        display: none; 
+    }
+
+    .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        flex-shrink: 0; 
+    }
+
+    /* شبكة المنتجات المرنة */
+    .products-grid { 
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+        gap: 20px; 
+        padding: 0 10px;
+    }
+    
+    .glass-card {
+        padding: 12px;
+    }
+    
+    .glass-card:hover { 
+        backdrop-filter: blur(8px) !important; 
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+    
+    /* إلغاء حركات الـ 3D ثقيلة المعالجة لضمان Zero Lag مع اللمس */
+    .tilt-card {
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    .img-container {
+        height: 200px; 
+    }
+    
+    /* جعل أزرار الكروت عمودية لتوفير مساحة لمس مريحة */
+    .card-actions {
+        flex-direction: column; 
+        gap: 8px;
+    }
+    
+    .order-btn, .add-to-cart-btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* سلة المشتريات ملء الشاشة للموبايل */
+    .cart-sidebar { 
+        width: 100%; 
+        left: -100%; 
+    }
+    .cart-sidebar.open { 
+        left: 0; 
+    }
+
+    /* نافذة الـ Modal واستمارات الإدخال */
+    .modal-content {
+        width: 92%;
+        padding: 25px 20px;
+    }
+    
+    .modal-content h2 {
+        font-size: 1.3rem;
+    }
+    
+    .input-group label {
+        font-size: 0.9rem;
+        top: 13px;
+    }
+    
+    .input-group input:focus ~ label, 
+    .input-group input:not(:placeholder-shown) ~ label, 
+    .input-group textarea:focus ~ label, 
+    .input-group textarea:not(:placeholder-shown) ~ label { 
+        transform: translateY(-22px) scale(0.8); 
+        background: #0d0e12;
+    }
 }
