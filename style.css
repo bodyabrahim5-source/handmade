@@ -1,1 +1,152 @@
-﻿
+﻿* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #020204; color: #f5f5f7;
+    overflow-x: hidden; position: relative;
+    text-rendering: optimizeSpeed; -webkit-font-smoothing: antialiased;
+    cursor: none;
+}
+
+/* 🎬 تنسيق شاشة الدخول المذهلة Preloader */
+.preloader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #020204; z-index: 99999;
+    display: flex; justify-content: center; align-items: center; text-align: center;
+}
+.preloader-content { width: 90%; max-width: 400px; }
+.preloader-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; }
+.preloader-logo span { color: #00ffcc; }
+.preloader-sub { color: #86868b; font-size: 0.95rem; margin-bottom: 30px; }
+.preloader-percentage { font-size: 3.5rem; font-weight: 800; color: #00ffcc; margin-bottom: 15px; }
+.preloader-bar { width: 100%; height: 2px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; overflow: hidden; }
+.preloader-progress { width: 0%; height: 100%; background: #00ffcc; transition: width 0.05s linear; box-shadow: 0 0 15px #00ffcc; }
+
+/* المؤشرات واللمبة خلف الكواليس */
+.custom-cursor {
+    position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+    background-color: #00ffcc; border-radius: 50%; z-index: 10000;
+    pointer-events: none; transform: translate3d(-50%, -50%, 0); will-change: transform;
+}
+.cursor-glow {
+    position: fixed; top: 0; left: 0; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0, 255, 204, 0.07) 0%, rgba(0, 168, 204, 0.01) 50%, rgba(0,0,0,0) 70%);
+    z-index: 1; pointer-events: none; will-change: transform;
+}
+
+/* الهيدر المحسن */
+.glass-nav {
+    position: fixed; top: 20px; left: 5%; right: 5%; height: 70px;
+    background: rgba(255, 255, 255, 0.005); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 50px;
+    display: flex; justify-content: space-between; align-items: center; padding: 0 40px; z-index: 1000;
+}
+.logo { font-size: 1.4rem; font-weight: 800; }
+.logo span { color: #00ffcc; }
+.glass-nav nav a { color: #86868b; text-decoration: none; margin-right: 25px; transition: color 0.3s; }
+.glass-nav nav a:hover, .glass-nav nav a.active { color: #ffffff; }
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+
+/* أيقونة السلة الذكية */
+.cart-icon-wrapper { position: relative; font-size: 1.35rem; color: #fff; cursor: none; }
+.cart-count {
+    position: absolute; top: -7px; left: -10px; background: #00ffcc; color: #000;
+    font-size: 0.75rem; font-weight: 700; padding: 1px 6px; border-radius: 10px;
+}
+.contact-btn { background: #ffffff; color: #000; border: none; padding: 10px 22px; border-radius: 20px; font-weight: 600; }
+
+/* قسم الواجهة */
+.hero { min-height: 95vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 40px 20px; position: relative; z-index: 2; }
+.hover-reveal-text { font-size: 4.6rem; font-weight: 900; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.word { opacity: 0; color: #ffffff; display: inline-block; will-change: transform, opacity; }
+.scroll-down-btn { color: #00ffcc; text-decoration: none; font-weight: 600; border: 1px solid rgba(0, 255, 204, 0.2); padding: 12px 28px; border-radius: 30px; margin-top: 40px; }
+
+/* قسم التصنيفات وأزرار الفلاتر */
+.products-section { padding: 80px 5%; position: relative; z-index: 2; }
+.section-header { text-align: center; margin-bottom: 50px; }
+.section-header h2 { font-size: 2.3rem; color: #fff; margin-bottom: 10px; }
+.section-header p { color: #86868b; margin-bottom: 25px; }
+.filter-buttons { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.filter-btn {
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+    color: #86868b; padding: 10px 20px; border-radius: 25px; font-weight: 600; transition: all 0.3s;
+}
+.filter-btn:hover, .filter-btn.active { background: #00ffcc; color: #000; border-color: #00ffcc; box-shadow: 0 0 15px rgba(0,255,204,0.2); }
+
+.products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; contain: layout style; }
+
+/* كروت المنتجات والأزرار المزدوجة */
+.glass-card { position: relative; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 20px; padding: 16px; overflow: hidden; will-change: transform; transform: translate3d(0,0,0); }
+.card-shine { position: absolute; top: -50%; left: -50%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%); pointer-events: none; opacity: 0; }
+.glass-card:hover { backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-color: rgba(0, 255, 204, 0.3); background: rgba(255, 255, 255, 0.02); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8); }
+
+.img-container { width: 100%; height: 250px; border-radius: 14px; overflow: hidden; background-color: #0a0b0d; }
+.img-container img { width: 100%; height: 100%; object-fit: cover; }
+.card-details { padding: 15px 5px 0 5px; text-align: right; }
+.card-details h3 { font-size: 1.1rem; margin-bottom: 6px; color: #fff; }
+.price { color: #00ffcc; font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+
+.card-actions { display: flex; gap: 10px; }
+.order-btn { flex: 2; padding: 11px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); color: #fff; font-weight: 600; border-radius: 10px; transition: all 0.25s; }
+.order-btn:hover { background: #fff; color: #000; }
+.add-to-cart-btn { flex: 1; padding: 11px; background: rgba(0, 255, 204, 0.08); border: 1px solid rgba(0, 255, 204, 0.2); color: #00ffcc; font-weight: 600; border-radius: 10px; transition: all 0.25s; }
+.add-to-cart-btn:hover { background: #00ffcc; color: #000; }
+
+/* 🛒 السلة الجانبية الذكية */
+.cart-sidebar {
+    position: fixed; top: 0; left: -360px; width: 350px; height: 100%;
+    background: #090a0d; border-right: 1px solid rgba(255,255,255,0.05);
+    z-index: 5000; display: flex; flex-direction: column;
+    transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cart-sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.8); }
+.cart-sidebar-header { padding: 25px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+.close-cart-btn { background: none; border: none; color: #86868b; font-size: 1.8rem; }
+.cart-items-container { flex: 1; padding: 20px; overflow-y: auto; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 12px; text-align: right; }
+.cart-item h4 { font-size: 0.95rem; color: #fff; margin-bottom: 3px; }
+.cart-item p { color: #00ffcc; font-size: 0.85rem; font-weight: 600; }
+.cart-item button { background: none; border: none; color: #ff453a; font-size: 1.4rem; }
+.cart-sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+.cart-total-row { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; }
+.cart-total-row span:last-child { color: #00ffcc; }
+.cart-checkout-btn { width: 100%; padding: 14px; background: #00ffcc; color: #000; border: none; border-radius: 12px; font-weight: 700; }
+
+/* قسم الآراء والتقييمات */
+.testimonials-section { padding: 60px 5%; position: relative; z-index: 2; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+.testimonial-card { padding: 25px; text-align: right; }
+.stars { color: #ffcc00; font-size: 0.9rem; margin-bottom: 15px; }
+.testimonial-card p { color: #d2d2d7; font-style: italic; line-height: 1.6; margin-bottom: 15px; font-size: 0.95rem; }
+.testimonial-card h4 { color: #fff; font-size: 1rem; }
+
+/* 🌟 نافذة الشراء فائقة السرعة والخفة (Zero Lag المطلقة للكتابة) 🌟 */
+.order-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 4, 0.9); display: none; justify-content: center; align-items: center; z-index: 6000; }
+.modal-content { width: 93%; max-width: 440px; padding: 30px; border-radius: 20px; border: 1px solid rgba(0, 255, 204, 0.25); background: #0d0e12; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9); position: relative; will-change: transform, opacity; transform: translate3d(0,0,0); }
+.close-modal { position: absolute; top: 15px; left: 20px; background: none; border: none; color: #86868b; font-size: 1.8rem; }
+.modal-content h2 { font-size: 1.5rem; margin-bottom: 5px; color: #fff; }
+.modal-price { color: #00ffcc; font-weight: 700; font-size: 1.2rem; margin-bottom: 25px; }
+
+.input-group { position: relative; margin-bottom: 22px; text-align: right; }
+.input-group input, .input-group textarea { width: 100%; padding: 13px; background: #14161d; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; color: #fff; font-size: 1rem; outline: none; }
+.input-group input:focus, .input-group textarea:focus { border-color: #00ffcc; }
+.input-group label { position: absolute; right: 14px; top: 13px; color: #86868b; transition: transform 0.2s ease, color 0.2s; pointer-events: none; transform-origin: right top; }
+.input-group input:focus ~ label, .input-group input:not(:placeholder-shown) ~ label, .input-group textarea:focus ~ label, .input-group textarea:not(:placeholder-shown) ~ label { transform: translateY(-24px) scale(0.85); color: #00ffcc; background: #0d0e12; padding: 0 6px; }
+
+.submit-order-btn { width: 100%; padding: 14px; background: #00ffcc; color: #000; border: none; border-radius: 12px; font-weight: 700; font-size: 1.05rem; }
+.submit-order-btn:hover { background: #fff; }
+
+footer { text-align: center; padding: 40px; color: #3a3a3c; font-size: 0.85rem; margin-top: 50px; }
+
+@media (max-width: 768px) {
+    body { cursor: auto; }
+    .custom-cursor, .cursor-glow { display: none; }
+    .hover-reveal-text { font-size: 2.6rem; gap: 10px; }
+    .glass-nav nav { display: none; }
+    .word { opacity: 1; }
+    .glass-card:hover { backdrop-filter: none; }
+    .cart-sidebar { width: 300px; left: -310px; }
+}
