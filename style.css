@@ -123,7 +123,7 @@ body {
 .testimonial-card p { color: #d2d2d7; font-style: italic; line-height: 1.6; margin-bottom: 15px; font-size: 0.95rem; }
 .testimonial-card h4 { color: #fff; font-size: 1rem; }
 
-/* 🌟 نافذة الشراء فائقة السرعة والخفة (Zero Lag المطلقة للكتابة) 🌟 */
+/* 🌟 نافذة الشراء فائقة السرعة والخفة */
 .order-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 4, 0.9); display: none; justify-content: center; align-items: center; z-index: 6000; }
 .modal-content { width: 93%; max-width: 440px; padding: 30px; border-radius: 20px; border: 1px solid rgba(0, 255, 204, 0.25); background: #0d0e12; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9); position: relative; will-change: transform, opacity; transform: translate3d(0,0,0); }
 .close-modal { position: absolute; top: 15px; left: 20px; background: none; border: none; color: #86868b; font-size: 1.8rem; }
@@ -142,7 +142,7 @@ body {
 footer { text-align: center; padding: 40px; color: #3a3a3c; font-size: 0.85rem; margin-top: 50px; }
 
 /* ==========================================================================
-   تحديث وتطوير التجاوب للهواتف الذكية (Mobile Responsive & Zero Lag)
+   تحديث وتطوير التجاوب للهواتف الذكية (Mobile Responsive & Hardware Accelerated)
    ========================================================================== */
 @media (max-width: 768px) {
     body { 
@@ -165,7 +165,7 @@ footer { text-align: center; padding: 40px; color: #3a3a3c; font-size: 0.85rem; 
         border-radius: 25px;
     }
     
-    /* جعل أزرار التنقل تظهر بشكل شريط سفلي متناسق داخل الهيدر */
+    /* شريط سفلي متناسق داخل الهيدر */
     .glass-nav nav { 
         display: flex !important;
         order: 3;
@@ -215,7 +215,7 @@ footer { text-align: center; padding: 40px; color: #3a3a3c; font-size: 0.85rem; 
         font-size: 0.9rem;
     }
 
-    /* جعل أزرار الفلاتر قابلة للسحب الأفقي الناعم لمنع التشوه */
+    /* شريط الفلاتر القابل للسحب الأفقي */
     .filter-buttons {
         justify-content: flex-start;
         overflow-x: auto; 
@@ -244,17 +244,14 @@ footer { text-align: center; padding: 40px; color: #3a3a3c; font-size: 0.85rem; 
     
     .glass-card {
         padding: 12px;
+        /* تم تفعيل تسريع كرت الشاشة (GPU) للحركات التفاعلية الفاخرة على الموبايل */
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
     }
     
     .glass-card:hover { 
         backdrop-filter: blur(8px) !important; 
         -webkit-backdrop-filter: blur(8px) !important;
-    }
-    
-    /* إلغاء حركات الـ 3D ثقيلة المعالجة لضمان Zero Lag مع اللمس */
-    .tilt-card {
-        transform: none !important;
-        transition: none !important;
     }
     
     .img-container {
